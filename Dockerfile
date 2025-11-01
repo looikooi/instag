@@ -14,14 +14,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем весь проект
 COPY . .
 
-# Собираем статические файлы Django
+# Собираем статические файлы Django на этапе сборки
 RUN python manage.py collectstatic --no-input
-
-# Делаем миграции (только если база доступна на этапе сборки; чаще делают на Pre-Deploy)
-# RUN python manage.py migrate
 
 # Открываем порт 10000 (Render автоматически перенаправляет)
 EXPOSE 10000
 
-# Команда запуска
-CMD ["gunicorn", "mysite.wsgi:application", "--bind", "0.0.0.0:10000"]
+# **Команда запуска контейнера**
+CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn mysite.wsgi:application --bind 0.0.0.0:10000
