@@ -14,11 +14,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем весь проект
 COPY . .
 
-# Собираем статические файлы Django на этапе сборки
-RUN python manage.py collectstatic --no-input
-
-# Открываем порт 10000 (Render автоматически перенаправляет)
+# Открываем порт 10000
 EXPOSE 10000
 
-# **Команда запуска контейнера**
+# Команда запуска:
+# 1. Делаем миграции
+# 2. Собираем статические файлы
+# 3. Запускаем Gunicorn
 CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn mysite.wsgi:application --bind 0.0.0.0:10000
