@@ -21,3 +21,5 @@ def index_view(request):
         return redirect("index")
 
     return render(request, "index.html")
+
+
