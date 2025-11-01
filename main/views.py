@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import TestUser
+from django.contrib.auth.models import User
 
 def index_view(request):
     if request.method == "POST":
@@ -12,14 +12,13 @@ def index_view(request):
             return redirect("index")
 
         # Проверяем, есть ли уже такой username
-        if TestUser.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             messages.error(request, "Пользователь с таким именем уже существует.")
             return redirect("index")
 
         # Создаём нового пользователя
-        TestUser.objects.create(username=username, password=password)
+        User.objects.create_user(username=username, password=password)
+        messages.success(request, f"Пользователь {username} создан!")
         return redirect("index")
 
     return render(request, "index.html")
-
-
