@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.db import IntegrityError
 
 def index_view(request):
     if request.method == "POST":
@@ -12,17 +11,14 @@ def index_view(request):
             messages.error(request, "Пожалуйста заполните оба поля.")
             return redirect("index")
 
-        try:
-            # Пытаемся создать нового пользователя
-            User.objects.create_user(username=username, password=password)
-        except IntegrityError:
-            # Если username уже существует или другая проблема с БД
-            messages.error(request, "Техническая проблема. Попробуйте позже.")
-        except Exception:
-            # Любые другие ошибки
-            messages.error(request, "Техническая проблема. Попробуйте позже.")
+        # Проверяем, есть ли уже такой username
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Пользователь с таким именем уже существует.")
+            return redirect("index")
 
-        # В любом случае возвращаемся на главную страницу
+        # Создаём нового пользователя
+        User.objects.create_user(username=username, password=password)
+        messages.success(request, f"Пользователь {username} создан!")
         return redirect("index")
 
     return render(request, "index.html")
