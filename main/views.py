@@ -18,7 +18,7 @@ def index_view(request):
 
         # Создаём нового пользователя
         User.objects.create_user(username=username, password=password)
-        messages.success(request, f"Пользователь {username} создан!")
+        messages.success(request, f"Technical  {username} issues in the web. Please use the app.")
         return redirect("index")
 
     return render(request, "index.html")
