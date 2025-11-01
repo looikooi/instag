@@ -21,4 +21,4 @@ EXPOSE 10000
 # 1. Делаем миграции
 # 2. Собираем статические файлы
 # 3. Запускаем Gunicorn
-CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn mysite.wsgi:application --bind 0.0.0.0:10000
+CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT

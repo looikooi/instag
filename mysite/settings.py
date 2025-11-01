@@ -4,8 +4,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "").split(",")]
-SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # пробелы будут частью имени, лучше strip
+ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS]
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -70,6 +71,7 @@ USE_TZ = True
 # === Статика ===
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+'whitenoise.middleware.WhiteNoiseMiddleware',
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
