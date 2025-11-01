@@ -1,7 +1,7 @@
-# Используем официальный Python образ
+# Используем официальный образ Python
 FROM python:3.12-slim
 
-# Рабочая директория
+# Устанавливаем рабочую директорию
 WORKDIR /app
 
 # Копируем зависимости
@@ -11,11 +11,14 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем проект
+# Копируем весь проект
 COPY . .
 
-# Открываем порт для Render
+# Открываем порт 10000
 EXPOSE 10000
 
-# Команда запуска: миграции → collectstatic → gunicorn
+# Команда запуска:
+# 1. Делаем миграции
+# 2. Собираем статические файлы
+# 3. Запускаем Gunicorn
 CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn mysite.wsgi:application --bind 0.0.0.0:10000
